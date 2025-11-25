@@ -27,6 +27,26 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
         tate = False
     return yoko, tate
 
+def gameover(screen: pg.Surface) -> None:
+    go_img = pg.Surface((WIDTH, HEIGHT))
+    
+    # 黒い矩形を描画し透明度を調整
+    pg.draw.rect(go_img, (0, 0, 0), (0, 0, WIDTH, HEIGHT))
+    go_img.set_alpha(200)
+    
+    # テキストを描画
+    font = pg.font.Font(None, 50)
+    txt = font.render("GAME OVER", True, (255, 255, 255))
+    go_img.blit(txt, (470, 320))
+
+    # 画像を読み込み、必要ならスケールして適切な位置に配置
+    img = pg.image.load("fig/8.png")
+    go_img.blit(img,(400, 300))
+    go_img.blit(img,(700, 300))
+
+    screen.blit(go_img, (0, 0))
+    pg.display.update()
+    pg.time.sleep(5)
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -51,6 +71,7 @@ def main():
             
         if kk_rct.colliderect(bb_rct):  # こうかとんと爆弾が衝突したら
             print("ゲームオーバー")
+            gameover(screen)
             return
 
         screen.blit(bg_img, [0, 0]) 
