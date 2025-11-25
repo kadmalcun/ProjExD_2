@@ -18,7 +18,7 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
     """
     引数：こうかとんRectまたは爆弾Rect
     戻り値：判定結果タプル（横方向，縦方向）
-    画面内ならTrue，画面外ならFalse
+    画面内ならTrue,画面外ならFalse
     """
     yoko, tate = True, True
     if rct.left < 0 or WIDTH <rct.right:  # 横方向のはみ出しチェック
@@ -48,6 +48,19 @@ def gameover(screen: pg.Surface) -> None:
     pg.display.update()
     pg.time.sleep(5)
 
+def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
+    bb_imgs = []
+    bb_accs = []
+    for i in range(1, 11):
+        bb_img = pg.Surface((20*i, 20*i))
+        pg.draw.circle(bb_img, (255, 0, 0), (10*i, 10*i), 10*i)  # 半径10*iの赤い円を描画
+        bb_img.set_colorkey((0, 0, 0))  # 黒色を透過色に設定
+        bb_imgs.append(bb_img)
+        
+        
+    bb_accs = [i for i in range(1, 11)]
+    return bb_imgs, bb_accs
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -64,6 +77,9 @@ def main():
     vx, vy = +5, +5  # 爆弾の横速度，縦速度
     clock = pg.time.Clock()
     tmr = 0
+    
+    bb_imgs, bb_accs = init_bb_imgs()
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
@@ -99,7 +115,15 @@ def main():
             vx *= -1
         if not tate:  # 縦方向にはみ出ていたら
             vy *= -1
-        bb_rct.move_ip(vx, vy)
+            
+        avx = vx * bb_accs[min(tmr//500, 9)]
+        avy = vy * bb_accs[min(tmr//500, 9)]
+        bb_img = bb_imgs[min(tmr//500, 9)]
+
+        bb_rct.move_ip(avx, avy)
+        bb_rct.width = bb_img.get_rect().width
+        bb_rct.height = bb_img.get_rect().height
+        
         screen.blit(bb_img, bb_rct)
         pg.display.update()
         tmr += 1
