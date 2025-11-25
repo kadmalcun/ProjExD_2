@@ -57,9 +57,21 @@ def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
         bb_img.set_colorkey((0, 0, 0))  # 黒色を透過色に設定
         bb_imgs.append(bb_img)
         
-        
     bb_accs = [i for i in range(1, 11)]
     return bb_imgs, bb_accs
+
+# 問題3
+# get_kk_imgs() -> dict[tuple[int, int], pg.Surface]:
+#     kk_dict = {
+#         (0, 0): rotozoom(3.png, 45, 0.9)
+#         (+5, 0): rotozoom(3.png, -45, 0.9)
+#         (+5, -5): rotozoom(3.png, 0, 0.9)
+#         (0, -5):rotozoom(3.png, 45, 0.9)
+#     }
+
+# 問題4
+# def calc_orientation(org: pg.Rect, dst: pg.Rect current_xy: tuple[float, float]) -> tuple[float, float]:
+    
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
