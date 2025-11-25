@@ -27,6 +27,7 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
         tate = False
     return yoko, tate
 
+
 def gameover(screen: pg.Surface) -> None:
     go_img = pg.Surface((WIDTH, HEIGHT))
     
@@ -47,6 +48,7 @@ def gameover(screen: pg.Surface) -> None:
     screen.blit(go_img, (0, 0))
     pg.display.update()
     pg.time.sleep(5)
+
 
 def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
     bb_imgs = []
